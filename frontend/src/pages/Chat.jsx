@@ -35,7 +35,7 @@ export default function Chat() {
   useEffect(() => {
     if (!token) return;
 
-    const ws = new WebSocket(`ws://127.0.0.1:8000/api/messages/ws/${token}`);
+    const ws = new WebSocket(`wss://rootify-backend.onrender.com/api/messages/ws/${token}`);
     wsRef.current = ws;
 
     ws.onmessage = (event) => {
