@@ -1,239 +1,70 @@
-# Rootify — Volunteer + NGO Network
+ Rootify — Volunteer & NGO Connection Platform
 
-A full-stack platform connecting volunteers with NGOs. Discover organizations, apply for opportunities, chat in real-time, and build your volunteer portfolio.
+Rootify is a full-stack web application that connects volunteers with NGOs. The platform enables users to discover organizations, apply for opportunities, communicate in real-time, and track their contributions through a personalized dashboard.
 
-## Tech Stack
+ Problem Statement
 
-| Layer    | Technology                         |
-|----------|------------------------------------|
-| Frontend | React (Vite) + Tailwind CSS        |
-| Backend  | FastAPI + SQLAlchemy               |
-| Database | MySQL 8.0                          |
-| Auth     | JWT (bcrypt + python-jose)         |
-| Chat     | WebSockets (FastAPI native)        |
+There is no centralized platform where individuals can easily find and engage with NGOs. At the same time, NGOs struggle to reach the right volunteers.
 
-## Features
+Rootify solves this problem by providing a single platform for NGO discovery, communication, and volunteer engagement.
 
-- ✅ JWT Authentication (register/login)
-- ✅ User profiles with interests & bio
-- ✅ NGO registration & management
-- ✅ Admin-controlled NGO verification
-- ✅ NGO discovery with search, category & location filters
-- ✅ Volunteer opportunities with applications
-- ✅ Real-time WebSocket chat
-- ✅ In-app notifications (DB-stored)
-- ✅ Volunteer portfolio with hours tracking
-- ✅ Community feed (posts)
-- ✅ Ratings & reviews for NGOs
-- ✅ Admin panel (stats, verification, role management)
-- ✅ Pagination on all list endpoints
-- ✅ Docker support
+ Tech Stack
+Layer	Technology
+Frontend	React (Vite) + Tailwind CSS
+Backend	FastAPI + SQLAlchemy
+Database	SQLite
+Auth	JWT (bcrypt + python-jose)
+Chat	WebSockets (FastAPI)
+ Features
+User Registration & Login (JWT Authentication)
+User Profile Management
+NGO Registration & Listing
+NGO Discovery (Search & Filters)
+Volunteer Opportunities & Applications
+Community Feed (Posts & Interaction)
+Real-time Chat using WebSockets
+Dashboard for tracking applications
+Basic Volunteer Portfolio Tracking
+System Architecture
 
-## Local Setup (macOS)
+The application follows a three-tier architecture:
 
-### Prerequisites
+Frontend (React) – Handles UI and user interaction
+Backend (FastAPI) – Manages APIs, authentication, and business logic
+Database (SQLite) – Stores application data using SQLAlchemy ORM
+ System Flow
+User interacts with the frontend
+Frontend sends API requests to backend
+Backend processes requests and interacts with database
+Response is returned as JSON
+WebSockets enable real-time chat functionality
+ Testing
+Manual UI testing
+API testing using FastAPI Swagger docs
+Verified authentication, CRUD operations, and chat functionality
+ Results
 
-```bash
-# Install Homebrew (if not installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+The system successfully supports:
 
-# Install Node.js, Python, MySQL
-brew install node python mysql
-```
+User authentication
+NGO discovery and applications
+Community interaction
+Real-time messaging
 
-### 1. Start MySQL
+FastAPI ensures fast response time and efficient performance.
 
-```bash
-brew services start mysql
+Deployment
 
-# Set root password (first time only)
-mysql_secure_installation
+The application is deployed using Render:
 
-# Create the database
-mysql -u root -p < backend/schema.sql
-```
+Frontend → Hosted on Render
+Backend → FastAPI deployed on Render
+Database → SQLite (development setup)
+Challenges Faced
+Integrating frontend with backend APIs
+Managing JWT authentication
+Implementing real-time chat using WebSockets
+Handling application state and data flow
+Conclusion
 
-### 2. Backend Setup
-
-```bash
-cd backend
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your MySQL password
-
-# Start the server
-uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### 3. Frontend Setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-```
-
-### 4. Access the Application
-
-| Service          | URL                                 |
-|------------------|-------------------------------------|
-| Frontend         | http://localhost:5173                |
-| Backend API      | http://localhost:8000                |
-| API Docs (Swagger)| http://localhost:8000/docs          |
-| API Docs (ReDoc) | http://localhost:8000/redoc          |
-
-### Default Admin Account
-
-```
-Email: admin@rootify.com
-Password: admin123
-```
-
-## Docker Setup (Alternative)
-
-```bash
-docker-compose up --build
-```
-
-This starts MySQL, the FastAPI backend, and the React frontend automatically.
-
-## Project Structure
-
-```
-Rootify/
-├── backend/
-│   ├── main.py              # FastAPI entry point
-│   ├── database.py           # SQLAlchemy config
-│   ├── config.py             # Environment config
-│   ├── schema.sql            # MySQL schema
-│   ├── requirements.txt
-│   ├── .env / .env.example
-│   ├── models/               # SQLAlchemy models
-│   │   ├── user.py
-│   │   ├── ngo.py
-│   │   ├── opportunity.py
-│   │   ├── application.py
-│   │   ├── message.py
-│   │   ├── notification.py
-│   │   ├── review.py
-│   │   └── post.py
-│   ├── schemas/              # Pydantic schemas
-│   │   ├── user.py
-│   │   ├── ngo.py
-│   │   ├── opportunity.py
-│   │   ├── application.py
-│   │   ├── message.py
-│   │   ├── notification.py
-│   │   ├── review.py
-│   │   └── post.py
-│   ├── routers/              # API endpoints
-│   │   ├── auth.py
-│   │   ├── ngos.py
-│   │   ├── opportunities.py
-│   │   ├── applications.py
-│   │   ├── messages.py
-│   │   ├── notifications.py
-│   │   ├── reviews.py
-│   │   ├── posts.py
-│   │   └── admin.py
-│   └── services/             # Business logic
-│       ├── auth.py
-│       └── notification.py
-├── frontend/
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── package.json
-│   └── src/
-│       ├── main.jsx
-│       ├── App.jsx
-│       ├── index.css
-│       ├── context/
-│       │   └── AuthContext.jsx
-│       ├── utils/
-│       │   └── api.js
-│       ├── components/
-│       │   ├── Navbar.jsx
-│       │   └── UI.jsx
-│       └── pages/
-│           ├── Home.jsx
-│           ├── Login.jsx
-│           ├── Register.jsx
-│           ├── NGOList.jsx
-│           ├── NGODetail.jsx
-│           ├── Dashboard.jsx
-│           ├── Profile.jsx
-│           ├── Chat.jsx
-│           ├── Portfolio.jsx
-│           ├── Feed.jsx
-│           ├── Notifications.jsx
-│           └── Admin.jsx
-├── docker-compose.yml
-├── Dockerfile.backend
-├── Dockerfile.frontend
-└── README.md
-```
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` — Sign up
-- `POST /api/auth/login` — Log in
-- `GET /api/auth/me` — Get profile
-- `PUT /api/auth/me` — Update profile
-
-### NGOs
-- `POST /api/ngos` — Register NGO
-- `GET /api/ngos` — List NGOs (paginated, filterable)
-- `GET /api/ngos/{id}` — Get NGO details
-- `PUT /api/ngos/{id}` — Update NGO
-- `POST /api/ngos/{id}/verify` — Toggle verification (admin)
-
-### Opportunities
-- `POST /api/opportunities` — Create opportunity
-- `GET /api/opportunities` — List opportunities
-- `GET /api/opportunities/{id}` — Get opportunity
-
-### Applications
-- `POST /api/applications` — Apply to opportunity
-- `GET /api/applications/my` — My applications
-- `GET /api/applications/ngo` — Applications to my NGO
-- `PUT /api/applications/{id}` — Update status/hours
-
-### Messages
-- `GET /api/messages/conversations` — List conversations
-- `GET /api/messages/{user_id}` — Chat history
-- `POST /api/messages` — Send message (REST)
-- `WS /api/messages/ws/{token}` — WebSocket chat
-
-### Notifications
-- `GET /api/notifications` — List notifications
-- `GET /api/notifications/unread-count` — Unread count
-- `PUT /api/notifications/{id}/read` — Mark read
-- `PUT /api/notifications/read-all` — Mark all read
-
-### Reviews
-- `POST /api/reviews` — Create review
-- `GET /api/reviews/ngo/{id}` — NGO reviews
-
-### Posts
-- `POST /api/posts` — Create post
-- `GET /api/posts` — List posts (paginated)
-- `DELETE /api/posts/{id}` — Delete post
-
-### Admin
-- `GET /api/admin/stats` — Dashboard stats
-- `GET /api/admin/users` — List users
-- `GET /api/admin/ngos` — List all NGOs
-- `PUT /api/admin/users/{id}/role` — Change user role
+Rootify demonstrates a complete full-stack solution for connecting volunteers with NGOs. The system is modular, efficient, and built using modern technologies.
