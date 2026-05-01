@@ -10,7 +10,9 @@ app = FastAPI(title="Rootify API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # temporary for deployment
+allow_origins=[
+    "https://rootify-frontend.onrender.com"
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
